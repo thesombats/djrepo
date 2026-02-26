@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from main.models import Resume, Rating, Skill, Education, PreviousJob, Company
 from main.forms import ResumeForm, SkillForm, EducationForm, PreviousJobForm
+from main.utils import generate_fake_resumes
 
 def landing_page(request):
     query = request.GET.get('q', '').strip()
@@ -130,3 +131,8 @@ def add_job(request):
             job.save()
             return redirect('edit_resume')
     return redirect('edit_resume')
+
+def generate_resumes_view(request, n):
+    count = generate_fake_resumes(n)
+    messages.success(request, f"Successfully generated {count} resumes.")
+    return redirect('resume_list')
